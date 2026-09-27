@@ -759,10 +759,13 @@ a.side-card:hover {
     .background-grid,
     .role-grid,
     .signals,
-    .proof-grid,
-    .figures,
     .case {
         grid-template-columns: 1fr;
+    }
+
+    .proof-grid,
+    .figures {
+        grid-template-columns: 1fr 1fr;
     }
 
     .hero h1 {
