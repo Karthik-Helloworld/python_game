@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karthik Sabhavat — AI Engineer & Product Builder</title>
+    <meta name="description" content="Karthik Sabhavat builds and evaluates agentic AI for accounts payable and receivable. LangGraph, BAML, Snowflake, and the eval systems around them. Open to product and AI engineering roles.">
+    <meta name="author" content="Karthik Sabhavat">
+    <meta name="theme-color" content="#123c3a">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23123c3a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23f3efe6'%3EK%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,620;1,9..144,520&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Karthik Sabhavat",
+        "jobTitle": "AI Engineer",
+        "url": "https://www.linkedin.com/in/karthik-sabhavat/",
+        "sameAs": [
+            "https://www.linkedin.com/in/karthik-sabhavat/",
+            "https://github.com/Karthik-Helloworld",
+            "https://github.com/Karthik-Helloworld/jarvis"
+        ],
+        "alumniOf": [
+            {
+                "@type": "CollegeOrUniversity",
+                "name": "Missouri University of Science and Technology"
+            },
+            {
+                "@type": "CollegeOrUniversity",
+                "name": "Kakatiya University"
+            }
+        ],
+        "knowsAbout": [
+            "Agentic AI",
+            "LangGraph",
+            "Accounts payable",
+            "Accounts receivable",
+            "Evaluation systems",
+            "Snowflake"
+        ]
+    }
+    </script>
+</head>
+<body>
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="site-header" id="top">
+        <div class="wrap header-inner">
+            <a class="brand" href="#top">Karthik Sabhavat</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="nav-toggle-bars" aria-hidden="true"></span>
+                <span class="sr-only">Open menu</span>
+            </button>
+            <nav class="nav" id="site-nav" aria-label="Primary">
+                <a href="#work">Work</a>
+                <a href="#practice">Practice</a>
+                <a href="#background">Background</a>
+                <a class="nav-resume" href="resume.pdf" download="Karthik_Sabhavat_Resume">Resume</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="hero">
+            <div class="wrap hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Open to product and AI engineering</p>
+                    <h1>Agents that show their work.</h1>
+                    <p class="lede">
+                        I build and evaluate agentic systems for accounts payable and receivable.
+                        The agent has to write SQL a reviewer can read. A second check has to confirm it answered the business question.
+                    </p>
+                    <p class="now"><span>Now</span> AP/AR workflows on LangGraph, BAML, Snowflake, Langfuse, AWS Bedrock, and Azure OpenAI.</p>
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#work">Selected work</a>
+                        <a class="btn btn-secondary" href="https://www.linkedin.com/in/karthik-sabhavat/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a class="btn btn-secondary" href="resume.pdf" download="Karthik_Sabhavat_Resume">Resume</a>
+                    </div>
+                </div>
+                <figure class="portrait">
+                    <img src="image1.jpg" width="604" height="708" alt="Portrait of Karthik Sabhavat">
+                    <figcaption>
+                        <strong>Karthik Sabhavat</strong>
+                        <span>Agentic systems for finance</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="proof" aria-label="Selected results">
+            <div class="wrap proof-grid">
+                <div>
+                    <p class="proof-value">96.8%</p>
+                    <p class="proof-label">Eval pass rate on the CDM agent</p>
+                </div>
+                <div>
+                    <p class="proof-value">40%</p>
+                    <p class="proof-label">System prompt cut, 13,879 to 8,273 tokens, no information dropped</p>
+                </div>
+                <div>
+                    <p class="proof-value">4×</p>
+                    <p class="proof-label">Faster eval runs with parallel execution</p>
+                </div>
+                <div>
+                    <p class="proof-value">2,000+</p>
+                    <p class="proof-label">Automated cases on a variance and margin product</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="work" id="work">
+            <div class="wrap">
+                <header class="section-head">
+                    <p class="eyebrow">Selected work</p>
+                    <h2>From a blank agent graph to a system a finance team can trust.</h2>
+                    <p class="section-lead">Six bodies of work. The professional core is an AP/AR agent, the evaluation around it, and the product structure that lets a second customer land without a rewrite.</p>
+                </header>
+
+                <article class="case" id="cdm">
+                    <p class="case-index">01</p>
+                    <div class="case-body">
+                        <p class="kicker">Agent platform</p>
+                        <h3>Maverick / Fincopilot CDM</h3>
+                        <p class="case-lead">Built the foundational AP/AR agentic query system from scratch, then shaped it so the next customer is a layer, not a new product.</p>
+                        <dl class="figures">
+                            <div>
+                                <dt>Eval pass rate</dt>
+                                <dd>96.8%</dd>
+                            </div>
+                            <div>
+                                <dt>Prompt compression</dt>
+                                <dd>40%</dd>
+                            </div>
+                            <div>
+                                <dt>Enum reference</dt>
+                                <dd>345+</dd>
+                            </div>
+                            <div>
+                                <dt>Warehouse metadata</dt>
+                                <dd>630 cols</dd>
+                            </div>
+                        </dl>
+                        <ul class="build-list">
+                            <li>LangGraph orchestration with supervisor routing, and structured output through BAML and Instructor.</li>
+                            <li>Replaced a Jinja2 SQL path with a metadata-driven pipeline against Snowflake.</li>
+                            <li>PostgreSQL enum reference schema covering 345+ values.</li>
+                            <li>Compressed the system prompt from 13,879 to 8,273 tokens with no information loss.</li>
+                            <li>Extracted a Snowflake metadata workbook: 7 sheets, 31 tables, 630 columns.</li>
+                        </ul>
+                        <div class="signals">
+                            <p><span>Engineering</span> The agent compiles to warehouse SQL. Routing, output contracts, and metadata are the system, not a longer prompt.</p>
+                            <p><span>Product</span> Two frames: a fixed canonical data model, and a flexible transform and prompt layer per customer. Validated against a second customer archetype.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="case" id="evals">
+                    <p class="case-index">02</p>
+                    <div class="case-body">
+                        <p class="kicker">Evaluation</p>
+                        <h3>Eval pipeline infrastructure</h3>
+                        <p class="case-lead">Built the measurement system behind the agent: how tests are pulled, how models are compared, and how a change gets a score before it merges.</p>
+                        <dl class="figures">
+                            <div>
+                                <dt>AP queries</dt>
+                                <dd>189</dd>
+                            </div>
+                            <div>
+                                <dt>AR queries</dt>
+                                <dd>477</dd>
+                            </div>
+                            <div>
+                                <dt>Run speed</dt>
+                                <dd>4×</dd>
+                            </div>
+                            <div>
+                                <dt>Models compared</dt>
+                                <dd>4</dd>
+                            </div>
+                        </dl>
+                        <ul class="build-list">
+                            <li>Excel-driven test pulls, Langfuse traces, and ThreadPoolExecutor parallelism for a 4× speedup.</li>
+                            <li>CI pipeline that runs evals when a pull request opens.</li>
+                            <li>Multi-model benchmark across GPT-4.1, Claude 3 Haiku, and Qwen 32B and 80B on 189 AP and 477 AR queries.</li>
+                            <li>QLoRA fine-tuning pipeline for Qwen 32B on SageMaker.</li>
+                            <li>Multi-critic harness that scores SQL correctness and business intent separately.</li>
+                            <li>Started an AI red-teaming layer. It surfaced IDOR, sandbox escape, and injection gaps.</li>
+                        </ul>
+                        <div class="signals">
+                            <p><span>Engineering</span> Evals are infrastructure: reproducible inputs, parallel runs, traces, and a critic split so a valid query can still fail on intent.</p>
+                            <p><span>Product</span> Model choice is a measured decision. The benchmark and the red-team findings are what a release conversation should be made of.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="case" id="bridge">
+                    <p class="case-index">03</p>
+                    <div class="case-body">
+                        <p class="kicker">Quality and observability</p>
+                        <h3>FormFactor Bridge Workbench</h3>
+                        <p class="case-lead">I own the automation suite for a financial variance and margin analytics product, and the observability rollout across the services behind it.</p>
+                        <ul class="build-list">
+                            <li>Ground-truth datasets and a pytest harness with 2,000+ cases.</li>
+                            <li>Computed-oracle and differential-testing architecture, so expected results are calculated rather than hand-maintained.</li>
+                            <li>Observability rollout with Grafana, Loki, Tempo, and OpenTelemetry.</li>
+                            <li>Audited deployment gaps and drove adoption of the standard.</li>
+                        </ul>
+                        <div class="signals">
+                            <p><span>Engineering</span> An oracle that computes margin and variance catches drift the moment the implementation and the definition disagree.</p>
+                            <p><span>Product</span> The suite is only half the job. The other half is which services are still dark, and what “observable” has to mean before a release.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="case" id="core-api">
+                    <p class="case-index">04</p>
+                    <div class="case-body">
+                        <p class="kicker">Platform</p>
+                        <h3>Core API / ECC module</h3>
+                        <p class="case-lead">Backend for a financial dashboard, structured so a new client does not require a fork.</p>
+                        <ul class="build-list">
+                            <li>FastAPI-style service structure with clean architecture boundaries.</li>
+                            <li>structlog for logs a person can actually trace per request.</li>
+                            <li>Client-agnostic, multi-tenant design.</li>
+                        </ul>
+                        <div class="signals">
+                            <p><span>Engineering</span> Module boundaries and structured logs keep tenant behavior visible without a special-case codebase.</p>
+                            <p><span>Product</span> One core, many clients. Tenant differences stay out of the shared path.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="case" id="personal-finance">
+                    <p class="case-index">05</p>
+                    <div class="case-body">
+                        <p class="kicker">Independent product</p>
+                        <h3>Personal finance agent</h3>
+                        <p class="case-lead">A personal AI financial advisor over a year of real bank and credit-card statements. Spend, tax, and a stock advisory, grounded in the data.</p>
+                        <ul class="build-list">
+                            <li>DuckDB pipeline across a year of statement history.</li>
+                            <li>Flows for spend analysis, tax preparation, and stock advisory.</li>
+                        </ul>
+                        <div class="signals">
+                            <p><span>Engineering</span> The model sits on a local analytical store. Advice is computed from the statements, not recalled from the chat.</p>
+                            <p><span>Product</span> Scoped to decisions a person actually makes: where the money went, what tax season needs, and whether a position deserves another look.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="case case-side" id="side">
+                    <p class="case-index">06</p>
+                    <div class="case-body">
+                        <p class="kicker">Also in motion</p>
+                        <h3>Side projects</h3>
+                        <p class="case-lead">Smaller builds I use to stay close to the full loop: voice, a consumer concept, and a personal agent lab.</p>
+                        <div class="side-grid">
+                            <a class="side-card" href="https://github.com/Karthik-Helloworld/jarvis" target="_blank" rel="noopener noreferrer">
+                                <p class="kicker">Open source</p>
+                                <h4>JARVIS</h4>
+                                <p>Voice assistant. Whisper for speech, Claude Haiku for the reply, ElevenLabs for the voice. On GitHub.</p>
+                            </a>
+                            <div class="side-card">
+                                <p class="kicker">Concept</p>
+                                <h4>Yo</h4>
+                                <p>An NRI-focused consumer app concept. React Native and Supabase.</p>
+                            </div>
+                            <div class="side-card">
+                                <p class="kicker">Personal lab</p>
+                                <h4>Multi-agent setup</h4>
+                                <p>About 17 agents across life domains. A working bench for routing, tools, and handoffs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="practice" id="practice">
+            <div class="wrap">
+                <header class="section-head">
+                    <p class="eyebrow">Practice</p>
+                    <h2>The same work, read two ways.</h2>
+                    <p class="section-lead">Product and AI engineering look at one system from different seats. I work in both, and I want the next role to use both.</p>
+                </header>
+                <div class="role-grid">
+                    <article class="role-card">
+                        <p class="kicker">AI engineering</p>
+                        <h3>Make the agent inspectable.</h3>
+                        <ul>
+                            <li>LangGraph orchestration and supervisor routing</li>
+                            <li>BAML and Instructor structured output</li>
+                            <li>Metadata-driven SQL on Snowflake</li>
+                            <li>Langfuse traces, PR-triggered evals, QLoRA on SageMaker</li>
+                            <li>Red teaming for IDOR, sandbox escape, and injection</li>
+                            <li>Grafana, Loki, Tempo, and OpenTelemetry</li>
+                        </ul>
+                    </article>
+                    <article class="role-card role-card-accent">
+                        <p class="kicker">Product</p>
+                        <h3>Decide what “good” means.</h3>
+                        <ul>
+                            <li>A fixed data model with a flexible layer per customer</li>
+                            <li>Pass rate as a release signal, with intent scored apart from SQL</li>
+                            <li>Benchmarks that choose a model, across 189 AP and 477 AR queries</li>
+                            <li>Multi-tenant design so the second client is not a rewrite</li>
+                            <li>Test oracles and observability standards that outlive one feature</li>
+                            <li>A public writing practice on AI, finance, and the career between them</li>
+                        </ul>
+                    </article>
+                </div>
+                <ol class="principles">
+                    <li>
+                        <h3>Query the warehouse.</h3>
+                        <p>The agent should compile to SQL a reviewer can read. Metadata is the contract between the model and Snowflake.</p>
+                    </li>
+                    <li>
+                        <h3>Score intent separately.</h3>
+                        <p>A correct query can still answer the wrong business question. SQL correctness and business intent are different critics.</p>
+                    </li>
+                    <li>
+                        <h3>Keep the frame fixed.</h3>
+                        <p>The canonical model stays stable. Customer differences live in the transform and the prompt layer.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="background" id="background">
+            <div class="wrap background-grid">
+                <div>
+                    <p class="eyebrow">Background</p>
+                    <h2>Analytics training, then the systems.</h2>
+                    <p class="section-lead">The degree path is information science and business analytics. The work since then is agentic systems for finance, with earlier internships in web development and business analysis.</p>
+                    <ol class="timeline">
+                        <li>
+                            <p class="when">Graduate</p>
+                            <h3>M.S. Information Science &amp; Technology</h3>
+                            <p>Business Analytics &amp; Data Science<br>Missouri University of Science and Technology</p>
+                        </li>
+                        <li>
+                            <p class="when">Undergraduate</p>
+                            <h3>B.Tech, Electronics &amp; Communication</h3>
+                            <p>Kakatiya University</p>
+                        </li>
+                        <li>
+                            <p class="when">Early career</p>
+                            <h3>CriticalRiver Technologies</h3>
+                            <p>Internships in web development and business analysis.</p>
+                        </li>
+                    </ol>
+                </div>
+                <aside class="voice">
+                    <img src="image2.jpg" width="637" height="648" alt="Karthik Sabhavat">
+                    <div class="voice-copy">
+                        <p class="kicker">Public voice</p>
+                        <h3>#TheMonkInChaos</h3>
+                        <p>I write on LinkedIn about the intersection of AI and finance, how agentic systems actually get built, and what the work does to a career. Useful if you want the voice behind the systems.</p>
+                        <a class="text-link" href="https://www.linkedin.com/in/karthik-sabhavat/" target="_blank" rel="noopener noreferrer">Read on LinkedIn</a>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+        <div class="wrap footer-grid">
+            <div>
+                <p class="footer-name">Karthik Sabhavat</p>
+                <p class="footer-line">Product and AI engineering. Financial workflows, agentic systems, evaluation.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="https://www.linkedin.com/in/karthik-sabhavat/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+                <li><a href="https://github.com/Karthik-Helloworld" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                <li><a href="https://github.com/Karthik-Helloworld/jarvis" target="_blank" rel="noopener noreferrer">JARVIS</a></li>
+                <li><a href="resume.pdf" download="Karthik_Sabhavat_Resume">Resume</a></li>
+                <li><a href="https://www.instagram.com/karthik______________s/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+                <li><a href="https://www.facebook.com/sabhavat.karthik" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+            </ul>
+        </div>
+        <p class="copyright">© 2026 Karthik Sabhavat</p>
+    </footer>
+
+    <script>
+        const header = document.querySelector(".site-header");
+        const toggle = document.querySelector(".nav-toggle");
+        const nav = document.querySelector("#site-nav");
+        const toggleLabel = toggle.querySelector(".sr-only");
+
+        const setNav = (open) => {
+            nav.classList.toggle("is-open", open);
+            toggle.setAttribute("aria-expanded", String(open));
+            toggleLabel.textContent = open ? "Close menu" : "Open menu";
+        };
+
+        toggle.addEventListener("click", () => {
+            setNav(!nav.classList.contains("is-open"));
+        });
+
+        nav.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => setNav(false));
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") setNav(false);
+        });
+
+        const onScroll = () => {
+            header.classList.toggle("is-scrolled", window.scrollY > 8);
+        };
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+
+        const sections = document.querySelectorAll("main section[id]");
+        const navLinks = nav.querySelectorAll('a[href^="#"]');
+        if ("IntersectionObserver" in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    navLinks.forEach((link) => {
+                        const active = link.getAttribute("href") === `#${entry.target.id}`;
+                        link.classList.toggle("is-active", active);
+                        if (active) link.setAttribute("aria-current", "true");
+                        else link.removeAttribute("aria-current");
+                    });
+                });
+            }, { rootMargin: "-40% 0px -50% 0px", threshold: 0.01 });
+            sections.forEach((section) => observer.observe(section));
+        }
+    </script>
+</body>
+</html>
