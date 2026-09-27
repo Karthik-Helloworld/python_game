@@ -696,29 +696,6 @@ a.side-card:hover {
 }
 
 @media (max-width: 900px) {
-    .hero-grid,
-    .background-grid,
-    .role-grid,
-    .signals,
-    .principles,
-    .proof-grid,
-    .side-grid,
-    .figures {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .hero-grid,
-    .background-grid {
-        gap: 2.2rem;
-    }
-
-    .principles,
-    .side-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 760px) {
     .nav-toggle {
         display: inline-flex;
     }
@@ -751,6 +728,29 @@ a.side-card:hover {
         margin-top: 0.3rem;
     }
 
+    .hero-grid,
+    .background-grid,
+    .role-grid,
+    .signals,
+    .principles,
+    .proof-grid,
+    .side-grid,
+    .figures {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .hero-grid,
+    .background-grid {
+        gap: 2.2rem;
+    }
+
+    .principles,
+    .side-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
     .hero {
         padding-top: 2.2rem;
     }
