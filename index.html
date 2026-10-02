@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karthik Sabhavat — AI Engineer & Product Builder</title>
-    <meta name="description" content="Karthik Sabhavat builds and evaluates agentic AI for accounts payable and receivable. LangGraph, BAML, Snowflake, and the eval systems around them. Open to product and AI engineering roles.">
+    <meta name="description" content="Karthik Sabhavat builds and evaluates finance AI. LangGraph, BAML, Snowflake, and the eval systems around them. Open to product and AI engineering roles.">
     <meta name="author" content="Karthik Sabhavat">
     <meta name="theme-color" content="#123c3a">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23123c3a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23f3efe6'%3EK%3C/text%3E%3C/svg%3E">
@@ -37,8 +37,7 @@
         "knowsAbout": [
             "Agentic AI",
             "LangGraph",
-            "Accounts payable",
-            "Accounts receivable",
+            "Finance AI",
             "Evaluation systems",
             "Snowflake"
         ]
@@ -71,10 +70,10 @@
                     <p class="eyebrow">Open to product and AI engineering</p>
                     <h1>Agents that show their work.</h1>
                     <p class="lede">
-                        I build and evaluate agentic systems for accounts payable and receivable.
+                        I build and evaluate finance AI.
                         The agent has to write SQL a reviewer can read. A second check has to confirm it answered the business question.
                     </p>
-                    <p class="now"><span>Now</span> AP/AR workflows on LangGraph, BAML, Snowflake, Langfuse, AWS Bedrock, and Azure OpenAI.</p>
+                    <p class="now"><span>Now</span> Finance AI on LangGraph, BAML, Snowflake, Langfuse, AWS Bedrock, and Azure OpenAI.</p>
                     <div class="hero-actions">
                         <a class="btn btn-primary" href="#work">Selected work</a>
                         <a class="btn btn-secondary" href="https://www.linkedin.com/in/karthik-sabhavat/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
@@ -95,7 +94,7 @@
             <div class="wrap proof-grid">
                 <div>
                     <p class="proof-value">96.8%</p>
-                    <p class="proof-label">Eval pass rate on the CDM agent</p>
+                    <p class="proof-label">Eval pass rate on the finance AI agent</p>
                 </div>
                 <div>
                     <p class="proof-value">40%</p>
@@ -117,15 +116,15 @@
                 <header class="section-head">
                     <p class="eyebrow">Selected work</p>
                     <h2>From a blank agent graph to a system a finance team can trust.</h2>
-                    <p class="section-lead">Six bodies of work. The professional core is an AP/AR agent, the evaluation around it, and the product structure that lets a second customer land without a rewrite.</p>
+                    <p class="section-lead">Six bodies of work. The professional core is a finance AI agent, the evaluation around it, and a product structure that lets the next deployment land without a rewrite.</p>
                 </header>
 
-                <article class="case" id="cdm">
+                <article class="case" id="finance-agent">
                     <p class="case-index">01</p>
                     <div class="case-body">
                         <p class="kicker">Agent platform</p>
-                        <h3>Maverick / Fincopilot CDM</h3>
-                        <p class="case-lead">Built the foundational AP/AR agentic query system from scratch, then shaped it so the next customer is a layer, not a new product.</p>
+                        <h3>Finance AI query agent</h3>
+                        <p class="case-lead">Built the foundational finance AI query system from scratch, then shaped it so the next deployment is a layer, not a new product.</p>
                         <dl class="figures">
                             <div>
                                 <dt>Eval pass rate</dt>
@@ -153,7 +152,7 @@
                         </ul>
                         <div class="signals">
                             <p><span>Engineering</span> The agent compiles to warehouse SQL. Routing, output contracts, and metadata are the system, not a longer prompt.</p>
-                            <p><span>Product</span> Two frames: a fixed canonical data model, and a flexible transform and prompt layer per customer. Validated against a second customer archetype.</p>
+                            <p><span>Product</span> Two frames: a fixed canonical data model, and a flexible transform and prompt layer per deployment. Validated on a second use case.</p>
                         </div>
                     </div>
                 </article>
@@ -166,12 +165,12 @@
                         <p class="case-lead">Built the measurement system behind the agent: how tests are pulled, how models are compared, and how a change gets a score before it merges.</p>
                         <dl class="figures">
                             <div>
-                                <dt>AP queries</dt>
-                                <dd>189</dd>
+                                <dt>Finance queries</dt>
+                                <dd>666</dd>
                             </div>
                             <div>
-                                <dt>AR queries</dt>
-                                <dd>477</dd>
+                                <dt>Critic types</dt>
+                                <dd>2</dd>
                             </div>
                             <div>
                                 <dt>Run speed</dt>
@@ -185,7 +184,7 @@
                         <ul class="build-list">
                             <li>Excel-driven test pulls, Langfuse traces, and ThreadPoolExecutor parallelism for a 4× speedup.</li>
                             <li>CI pipeline that runs evals when a pull request opens.</li>
-                            <li>Multi-model benchmark across GPT-4.1, Claude 3 Haiku, and Qwen 32B and 80B on 189 AP and 477 AR queries.</li>
+                            <li>Multi-model benchmark across GPT-4.1, Claude 3 Haiku, and Qwen 32B and 80B on 666 finance queries.</li>
                             <li>QLoRA fine-tuning pipeline for Qwen 32B on SageMaker.</li>
                             <li>Multi-critic harness that scores SQL correctness and business intent separately.</li>
                             <li>Started an AI red-teaming layer. It surfaced IDOR, sandbox escape, and injection gaps.</li>
@@ -197,11 +196,11 @@
                     </div>
                 </article>
 
-                <article class="case" id="bridge">
+                <article class="case" id="analytics">
                     <p class="case-index">03</p>
                     <div class="case-body">
                         <p class="kicker">Quality and observability</p>
-                        <h3>FormFactor Bridge Workbench</h3>
+                        <h3>Variance and margin analytics</h3>
                         <p class="case-lead">I own the automation suite for a financial variance and margin analytics product, and the observability rollout across the services behind it.</p>
                         <ul class="build-list">
                             <li>Ground-truth datasets and a pytest harness with 2,000+ cases.</li>
@@ -220,16 +219,16 @@
                     <p class="case-index">04</p>
                     <div class="case-body">
                         <p class="kicker">Platform</p>
-                        <h3>Core API / ECC module</h3>
-                        <p class="case-lead">Backend for a financial dashboard, structured so a new client does not require a fork.</p>
+                        <h3>Finance dashboard API</h3>
+                        <p class="case-lead">Backend for a finance dashboard, structured so a new deployment does not require a fork.</p>
                         <ul class="build-list">
                             <li>FastAPI-style service structure with clean architecture boundaries.</li>
                             <li>structlog for logs a person can actually trace per request.</li>
-                            <li>Client-agnostic, multi-tenant design.</li>
+                            <li>Multi-tenant design, with no per-team fork.</li>
                         </ul>
                         <div class="signals">
-                            <p><span>Engineering</span> Module boundaries and structured logs keep tenant behavior visible without a special-case codebase.</p>
-                            <p><span>Product</span> One core, many clients. Tenant differences stay out of the shared path.</p>
+                            <p><span>Engineering</span> Module boundaries and structured logs keep each deployment visible without a special-case codebase.</p>
+                            <p><span>Product</span> One core, many teams. Differences stay out of the shared path.</p>
                         </div>
                     </div>
                 </article>
@@ -303,10 +302,10 @@
                         <p class="kicker">Product</p>
                         <h3>Decide what “good” means.</h3>
                         <ul>
-                            <li>A fixed data model with a flexible layer per customer</li>
+                            <li>A fixed data model with a flexible layer per deployment</li>
                             <li>Pass rate as a release signal, with intent scored apart from SQL</li>
-                            <li>Benchmarks that choose a model, across 189 AP and 477 AR queries</li>
-                            <li>Multi-tenant design so the second client is not a rewrite</li>
+                            <li>Benchmarks that choose a model, across 666 finance queries</li>
+                            <li>Multi-tenant design so the next deployment is not a rewrite</li>
                             <li>Test oracles and observability standards that outlive one feature</li>
                             <li>A public writing practice on AI, finance, and the career between them</li>
                         </ul>
@@ -323,7 +322,7 @@
                     </li>
                     <li>
                         <h3>Keep the frame fixed.</h3>
-                        <p>The canonical model stays stable. Customer differences live in the transform and the prompt layer.</p>
+                        <p>The canonical model stays stable. Differences between deployments live in the transform and the prompt layer.</p>
                     </li>
                 </ol>
             </div>
@@ -370,7 +369,7 @@
         <div class="wrap footer-grid">
             <div>
                 <p class="footer-name">Karthik Sabhavat</p>
-                <p class="footer-line">Product and AI engineering. Financial workflows, agentic systems, evaluation.</p>
+                <p class="footer-line">Product and AI engineering. Finance AI, agentic systems, evaluation.</p>
             </div>
             <ul class="footer-links">
                 <li><a href="https://www.linkedin.com/in/karthik-sabhavat/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
