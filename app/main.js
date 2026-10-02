@@ -763,6 +763,9 @@
 
   function renderCleared(level) {
     const gain = level.boss ? logic.BOSS_POINTS : logic.LEVEL_POINTS;
+    const awardLine = level.mode === "write"
+      ? "Level cleared. +10 for the tests and +40 for the writing."
+      : "Level cleared. +" + gain + " Python points.";
     let nextId = null;
     if (level.next) nextId = level.next;
     else if (!level.mode) {
@@ -777,9 +780,9 @@
       ? '<button class="primary" data-action="open-level" data-level="' + next.id + '" data-testid="next-level">' + esc(next.title) + "</button>"
       : '<p class="tutor">' + doneNote + "</p>";
     return (
-      '<section class="panel" data-testid="cleared"><p class="concept">Level cleared. +' +
-      gain +
-      " Python points.</p><p>You have " +
+      '<section class="panel" data-testid="cleared"><p class="concept">' +
+      awardLine +
+      '</p><p>You have ' +
       progress.points +
       ".</p>" +
       (ui.report ? '<p class="tutor" data-testid="judge-report">' + esc(ui.report) + "</p>" : "") +
@@ -903,7 +906,7 @@
 
   function renderFlaws(level) {
     return (
-      '<section class="panel" data-testid="zone"><p class="concept">You are in the correct judge zone.</p><p class="tutor">Name the flaws. Say what breaks if this runs more than once, and what the file does. Haiku judges that list when a key is saved.</p><textarea id="flaw-text" data-testid="flaws" spellcheck="false">' +
+      '<section class="panel" data-testid="zone"><p class="concept">You are in the correct judge zone. +10 Python points.</p><p class="tutor">Name the flaws. Say what breaks if this runs more than once, and what the file does. Haiku judges that list when a key is saved.</p><textarea id="flaw-text" data-testid="flaws" spellcheck="false">' +
       esc(ui.flawDraft) +
       '</textarea><p class="tutor" data-testid="judge-report">' +
       esc(ui.report) +
