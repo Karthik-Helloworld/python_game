@@ -408,14 +408,14 @@
   }
 
   function render() {
-    app.innerHTML = '<div class="wrap">' + header() + body() + "</div>";
+    app.innerHTML = '<div class="board">' + header() + body() + "</div>";
     const guess = document.getElementById("guess");
     if (guess) guess.focus();
   }
 
   function header() {
     return (
-      '<header class="top"><div><p class="eyebrow">Python Campaign</p><h1>Karthik</h1></div>' +
+      '<header class="hud"><div class="mark"><span class="sigil" aria-hidden="true"></span><div><p class="eyebrow">Python Campaign</p><h1>Karthik</h1></div></div>' +
       '<div class="points" data-testid="points"><b>' +
       progress.points +
       '</b><span>Python points</span></div></header>'
@@ -450,6 +450,7 @@
         else if (state.correctCount > 0) status = "Check " + state.correctCount + "/3";
         return (
           '<li><button class="level-card' +
+          (state.cleared ? " cleared" : "") +
           (level.boss ? " boss" : "") +
           '" data-testid="level-' +
           level.id +
@@ -499,7 +500,9 @@
           if (state.cleared) status = "Cleared";
           else if (state.checkPassed) status = level.mode === "write" ? "Tests passed" : "Judge zone";
           return (
-            '<li><button class="level-card" data-testid="level-' +
+            '<li><button class="level-card' +
+            (state.cleared ? " cleared" : "") +
+            '" data-testid="level-' +
             level.id +
             '" data-action="open-level" data-level="' +
             level.id +
