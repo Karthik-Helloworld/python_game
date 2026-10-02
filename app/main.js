@@ -415,7 +415,7 @@
 
   function header() {
     return (
-      '<header class="hud"><div class="mark"><span class="sigil" aria-hidden="true"></span><div><p class="eyebrow">Python Campaign</p><h1>Karthik</h1></div></div>' +
+      '<header class="hud"><div class="mark"><div><p class="eyebrow">Python Campaign</p><h1>Karthik</h1></div></div>' +
       '<div class="points" data-testid="points"><b>' +
       progress.points +
       '</b><span>Python points</span></div></header>'
@@ -434,40 +434,79 @@
     return renderMap();
   }
 
+  function levelStatus(level, state, open) {
+    const total = logic.CHECK_POINTS + (level.boss ? logic.BOSS_POINTS : logic.LEVEL_POINTS);
+    if (!open) return "Locked";
+    if (state.cleared) return "Cleared";
+    if (state.gameWon) return "Point at the file";
+    if (state.checkPassed) return level.mode === "write" ? "Tests passed" : level.mode === "judge" ? "Judge zone" : "Game open";
+    if (state.correctCount > 0) return "Check " + state.correctCount + "/3";
+    return total + " points";
+  }
+
+  function nextUp() {
+    for (const id of content.order) {
+      if (logic.isUnlocked(id, content.order, progress) && !progress.levels[id].cleared) return content.byId[id];
+    }
+    for (const level of content.practice) {
+      if (!progress.levels[level.id].cleared) return level;
+    }
+    return null;
+  }
+
+  function rowFor(level, index, open) {
+    const state = progress.levels[level.id];
+    return (
+      '<li><button class="level-card' +
+      (state.cleared ? " cleared" : "") +
+      (level.boss ? " boss" : "") +
+      '" data-testid="level-' +
+      level.id +
+      '" data-action="open-level" data-level="' +
+      level.id +
+      '"' +
+      (open ? "" : " disabled") +
+      '><span class="index">' +
+      (index + 1) +
+      '</span><span class="card-title">' +
+      esc(level.title) +
+      '</span><span class="status">' +
+      levelStatus(level, state, open) +
+      "</span></button></li>"
+    );
+  }
+
   function renderMap() {
-    const cleared = content.order.filter((id) => progress.levels[id].cleared).length;
-    const cards = content.order
+    const featured = nextUp();
+    const intro = {
+      variables: "Six lines. Three questions. Then you guess a number.",
+      conditionals: "See who is ahead. Then play first to five.",
+      loops: "Buy the map, then leave.",
+      "boss-a": "Roll to 20. Then find the lines yourself.",
+      "write-ahead": "Write one small function. Tests check it.",
+      "judge-save": "Score a file, then name what would break.",
+    };
+    const featuredHtml = featured
+      ? '<button class="now" data-testid="level-' +
+        featured.id +
+        '" data-action="open-level" data-level="' +
+        featured.id +
+        '"><p class="kicker">Start here</p><h2>' +
+        esc(featured.title) +
+        '</h2><p class="tutor">' +
+        esc(intro[featured.id] || "One short step.") +
+        '</p><span class="primary">Begin</span></button>'
+      : '<p class="hello">You finished what is open.</p>';
+    const rows = content.order
       .map((id, index) => {
-        const level = content.byId[id];
-        const state = progress.levels[id];
-        const open = logic.isUnlocked(id, content.order, progress);
-        const total = logic.CHECK_POINTS + (level.boss ? logic.BOSS_POINTS : logic.LEVEL_POINTS);
-        let status = total + " points";
-        if (!open) status = "Locked";
-        else if (state.cleared) status = "Cleared";
-        else if (state.gameWon) status = "Point at the file";
-        else if (state.checkPassed) status = "Game open";
-        else if (state.correctCount > 0) status = "Check " + state.correctCount + "/3";
-        return (
-          '<li><button class="level-card' +
-          (state.cleared ? " cleared" : "") +
-          (level.boss ? " boss" : "") +
-          '" data-testid="level-' +
-          level.id +
-          '" data-action="open-level" data-level="' +
-          level.id +
-          '"' +
-          (open ? "" : " disabled") +
-          '><span class="index">' +
-          (index + 1) +
-          '</span><span><p class="kicker">' +
-          (level.boss ? "Boss" : "Level") +
-          "</p><h2>" +
-          esc(level.title) +
-          '</h2></span><span class="status">' +
-          status +
-          "</span></button></li>"
-        );
+        if (featured && id === featured.id) return "";
+        return rowFor(content.byId[id], index, logic.isUnlocked(id, content.order, progress));
+      })
+      .join("");
+    const practiceRows = content.practice
+      .map((level, index) => {
+        if (featured && level.id === featured.id) return "";
+        return rowFor(level, index, true);
       })
       .join("");
     const later = content.acts
@@ -476,51 +515,22 @@
         (act) =>
           '<button class="later-card" data-action="open-act" data-act="' +
           act.id +
-          '"><p class="kicker">Act ' +
-          act.id +
-          "</p><h3>" +
+          '">' +
           esc(act.title) +
-          "</h3><p>" +
-          esc(act.blurb) +
-          "</p></button>"
+          "</button>"
       )
       .join("");
     return (
-      '<main data-testid="map"><section class="act"><div class="act-head"><h2>Act I · Tiny games</h2><p>' +
-      cleared +
-      '/4 cleared</p></div><p class="lede">A level opens with a short module. Three questions have to be right before the game unlocks. Clearing the game pays the Python points. A miss swaps in a new question and costs nothing.</p><ol class="path">' +
-      cards +
-      '</ol></section><section class="act"><div class="act-head"><h2>Write and judge</h2><p>Open</p></div><p class="lede">Write a function. Hidden tests decide if it works. Claude Haiku judges the writing when a key is saved. Then score a file against a fixed band, and name the flaws. Haiku judges that list too. With no key, a fixed rubric does the same job.</p>' +
+      '<main data-testid="map"><p class="hello">One idea. Then a short game. Stop when it feels like homework.</p>' +
+      featuredHtml +
+      '<section class="act"><h2>The path</h2><ol class="path">' +
+      rows +
+      practiceRows +
+      '</ol></section><details class="fold"><summary>Haiku, if you want it</summary>' +
       haikuPanel() +
-      '<ol class="path">' +
-      content.practice
-        .map((level, index) => {
-          const state = progress.levels[level.id];
-          let status = "50 points";
-          if (state.cleared) status = "Cleared";
-          else if (state.checkPassed) status = level.mode === "write" ? "Tests passed" : "Judge zone";
-          return (
-            '<li><button class="level-card' +
-            (state.cleared ? " cleared" : "") +
-            '" data-testid="level-' +
-            level.id +
-            '" data-action="open-level" data-level="' +
-            level.id +
-            '"><span class="index">' +
-            (index + 1) +
-            '</span><span><p class="kicker">' +
-            (level.mode === "write" ? "Write" : "Judge") +
-            "</p><h2>" +
-            esc(level.title) +
-            '</h2></span><span class="status">' +
-            status +
-            "</span></button></li>"
-          );
-        })
-        .join("") +
-      '</ol></section><section class="later"><h2>Later acts</h2><div class="later-grid">' +
+      '</details><details class="fold"><summary>Later acts</summary><div class="later-grid">' +
       later +
-      '</div></section><button class="text-btn reset" data-action="reset">Reset progress</button></main>'
+      '</div></details><button class="text-btn reset" data-action="reset">Reset progress</button></main>'
     );
   }
 
