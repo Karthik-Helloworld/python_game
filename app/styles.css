@@ -252,13 +252,25 @@ pre, .code-list {
 
 .controls, .name-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 12px; }
 
-input[type="text"], input[type="number"] {
+input[type="text"], input[type="number"], input[type="password"], textarea {
   background: #12160e;
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 10px 12px;
   min-width: 0;
 }
+
+textarea {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  line-height: 1.45;
+}
+
+.key-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.key-row input { flex: 1; min-width: 180px; }
+.choice.selected { border-color: var(--copper); background: rgba(224, 138, 69, 0.22); }
 
 .log {
   max-height: 180px;

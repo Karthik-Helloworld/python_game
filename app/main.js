@@ -2,6 +2,7 @@
   const logic = window.CampaignLogic;
   const content = window.CampaignLevels;
   const STORAGE_KEY = "python-campaign-v1";
+  const KEY_STORAGE = "python-campaign-haiku-key";
 
   const ui = {
     screen: "map",
@@ -15,24 +16,31 @@
     selected: [],
     game: null,
     note: "",
+    draft: "",
+    flawDraft: "",
+    scoreDraft: "",
+    production: "",
+    busy: false,
+    report: "",
   };
 
   let progress = load();
 
   const app = document.getElementById("app");
   app.addEventListener("click", onClick);
+  app.addEventListener("input", onInput);
   document.addEventListener("keydown", onKey);
 
   render();
 
   function load() {
-    const base = logic.emptyProgress(content.order);
+    const base = logic.emptyProgress(content.allIds);
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return base;
       const saved = JSON.parse(raw);
       base.points = Number(saved.points) || 0;
-      for (const id of content.order) {
+      for (const id of content.allIds) {
         if (saved.levels && saved.levels[id]) {
           base.levels[id] = { ...base.levels[id], ...saved.levels[id] };
           if (!Array.isArray(base.levels[id].usedQuestionIds)) {
@@ -70,6 +78,18 @@
     else if (action === "roll") roll();
     else if (action === "toggle-line") toggleLine(target.dataset.line);
     else if (action === "confirm-lines") confirmLines();
+    else if (action === "save-key") saveKey();
+    else if (action === "clear-key") clearKey();
+    else if (action === "judge-writing") judgeWriting();
+    else if (action === "set-production") setProduction(target.dataset.value);
+    else if (action === "check-score") checkScore();
+    else if (action === "judge-flaws") judgeFlaws();
+  }
+
+  function onInput(event) {
+    if (event.target.id === "student-code") ui.draft = event.target.value;
+    if (event.target.id === "flaw-text") ui.flawDraft = event.target.value;
+    if (event.target.id === "review-score") ui.scoreDraft = event.target.value;
   }
 
   function onKey(event) {
@@ -98,23 +118,39 @@
   }
 
   function reset() {
-    if (!window.confirm("Clear all Python points and start Act I over?")) return;
-    progress = logic.emptyProgress(content.order);
+    if (!window.confirm("Clear all Python points and start over?")) return;
+    progress = logic.emptyProgress(content.allIds);
     save();
     showMap();
   }
 
   function openLevel(id) {
-    if (!logic.isUnlocked(id, content.order, progress)) return;
     const level = content.byId[id];
+    if (!level) return;
+    if (!level.alwaysOpen && !logic.isUnlocked(id, content.order, progress)) return;
     const state = progress.levels[id];
     ui.screen = "level";
     ui.levelId = id;
     ui.feedback = "";
     ui.feedbackTone = "";
     ui.selected = [];
+    ui.report = "";
     ui.moduleRan = Boolean(state.checkPassed || state.correctCount > 0 || state.usedQuestionIds.length);
     ui.shrinkRan = false;
+    if (level.mode === "write") {
+      ui.draft = state.draft || level.starter;
+      ui.step = state.cleared ? "cleared" : "write";
+      render();
+      return;
+    }
+    if (level.mode === "judge") {
+      ui.flawDraft = state.flawDraft || "";
+      ui.production = "";
+      ui.scoreDraft = "";
+      ui.step = state.cleared ? "cleared" : state.checkPassed ? "flaws" : "review";
+      render();
+      return;
+    }
     if (state.cleared) ui.step = "cleared";
     else if (state.gameWon) ui.step = "point";
     else if (state.checkPassed) {
@@ -453,6 +489,32 @@
       cleared +
       '/4 cleared</p></div><p class="lede">A level opens with a short module. Three questions have to be right before the game unlocks. Clearing the game pays the Python points. A miss swaps in a new question and costs nothing.</p><ol class="path">' +
       cards +
+      '</ol></section><section class="act"><div class="act-head"><h2>Write and judge</h2><p>Open</p></div><p class="lede">Write a function. Hidden tests decide if it works. Claude Haiku judges the writing when a key is saved. Then score a file against a fixed band, and name the flaws. Haiku judges that list too. With no key, a fixed rubric does the same job.</p>' +
+      haikuPanel() +
+      '<ol class="path">' +
+      content.practice
+        .map((level, index) => {
+          const state = progress.levels[level.id];
+          let status = "50 points";
+          if (state.cleared) status = "Cleared";
+          else if (state.checkPassed) status = level.mode === "write" ? "Tests passed" : "Judge zone";
+          return (
+            '<li><button class="level-card" data-testid="level-' +
+            level.id +
+            '" data-action="open-level" data-level="' +
+            level.id +
+            '"><span class="index">' +
+            (index + 1) +
+            '</span><span><p class="kicker">' +
+            (level.mode === "write" ? "Write" : "Judge") +
+            "</p><h2>" +
+            esc(level.title) +
+            '</h2></span><span class="status">' +
+            status +
+            "</span></button></li>"
+          );
+        })
+        .join("") +
       '</ol></section><section class="later"><h2>Later acts</h2><div class="later-grid">' +
       later +
       '</div></section><button class="text-btn reset" data-action="reset">Reset progress</button></main>'
@@ -478,6 +540,20 @@
   }
 
   function steps(level, state) {
+    if (level.mode === "write") {
+      return stepButtons([["write", "Write"]], "write", false);
+    }
+    if (level.mode === "judge") {
+      const current = ui.step === "flaws" || ui.step === "cleared" ? "flaws" : "review";
+      return stepButtons(
+        [
+          ["review", "Score"],
+          ["flaws", "Flaws"],
+        ],
+        current,
+        !state.checkPassed
+      );
+    }
     const gameOpen = logic.canEnterGame(state);
     const items = [
       ["module", "Module"],
@@ -508,7 +584,35 @@
     );
   }
 
+  function stepButtons(items, current, flawsLocked) {
+    return (
+      '<ol class="steps">' +
+      items
+        .map(([id, label]) => {
+          const disabled = id === "flaws" && flawsLocked;
+          return (
+            '<li><button type="button" data-testid="step-' +
+            id +
+            '"' +
+            (id === current ? ' aria-current="step"' : "") +
+            (disabled ? " disabled" : "") +
+            ">" +
+            label +
+            "</button></li>"
+          );
+        })
+        .join("") +
+      "</ol>"
+    );
+  }
+
   function stepBody(level, state) {
+    if (level.mode === "write") return ui.step === "cleared" ? renderCleared(level) : renderWrite(level);
+    if (level.mode === "judge") {
+      if (ui.step === "cleared") return renderCleared(level);
+      if (ui.step === "flaws") return renderFlaws(level);
+      return renderReview(level);
+    }
     if (ui.step === "shrink") return renderShrink(level);
     if (ui.step === "check") return renderCheck(level, state);
     if (ui.step === "gate") return renderGate(level);
@@ -659,17 +763,26 @@
 
   function renderCleared(level) {
     const gain = level.boss ? logic.BOSS_POINTS : logic.LEVEL_POINTS;
-    const nextId = content.order[content.order.indexOf(level.id) + 1];
+    let nextId = null;
+    if (level.next) nextId = level.next;
+    else if (!level.mode) {
+      const index = content.order.indexOf(level.id);
+      nextId = index >= 0 ? content.order[index + 1] : null;
+    }
     const next = nextId ? content.byId[nextId] : null;
+    const doneNote = level.mode
+      ? "Your points stay saved."
+      : "Act I is finished. Later acts are not in this build. Your points stay saved.";
     const nextButton = next
       ? '<button class="primary" data-action="open-level" data-level="' + next.id + '" data-testid="next-level">' + esc(next.title) + "</button>"
-      : '<p class="tutor">Act I is finished. Later acts are not in this build. Your points stay saved.</p>';
+      : '<p class="tutor">' + doneNote + "</p>";
     return (
       '<section class="panel" data-testid="cleared"><p class="concept">Level cleared. +' +
       gain +
       " Python points.</p><p>You have " +
       progress.points +
       ".</p>" +
+      (ui.report ? '<p class="tutor" data-testid="judge-report">' + esc(ui.report) + "</p>" : "") +
       nextButton +
       '<button class="text-btn" data-action="show-map">Back to campaign</button></section>'
     );
@@ -722,6 +835,230 @@
         return '<span class="k">' + match + "</span>";
       }
     );
+  }
+
+  function haikuKey() {
+    return localStorage.getItem(KEY_STORAGE) || "";
+  }
+
+  function haikuPanel() {
+    const saved = haikuKey() ? "Haiku key saved on this browser." : "No Haiku key yet. A fixed rubric judges until you save one.";
+    return (
+      '<section class="panel"><h3>Claude Haiku 4.5</h3><p class="tutor">The key stays in this browser. It is sent only to the tutor on this machine, which calls Haiku. It is not saved in the repo.</p><div class="key-row"><input id="haiku-key" type="password" autocomplete="off" placeholder="Paste an Anthropic key"><button class="primary" data-action="save-key" data-testid="save-key">Save key</button><button class="text-btn" data-action="clear-key">Clear key</button></div><p data-testid="key-state">' +
+      esc(saved) +
+      "</p></section>"
+    );
+  }
+
+  function saveKey() {
+    const field = document.getElementById("haiku-key");
+    const value = field ? field.value.trim() : "";
+    if (!value) return;
+    localStorage.setItem(KEY_STORAGE, value);
+    render();
+  }
+
+  function clearKey() {
+    localStorage.removeItem(KEY_STORAGE);
+    render();
+  }
+
+  function renderWrite(level) {
+    const state = currentState();
+    const note = state.checkPassed ? "Tests already passed. The writing judge still has to accept it." : "Hidden tests check the behavior. Then the writing is judged.";
+    return (
+      '<section class="split"><div class="panel"><p class="concept">' +
+      esc(level.concept) +
+      '</p><p class="tutor">' +
+      esc(note) +
+      '</p><p class="tutor" data-testid="judge-report">' +
+      esc(ui.report) +
+      '</p><div class="actions"><button class="primary" data-action="judge-writing" data-testid="judge-writing"' +
+      (ui.busy ? " disabled" : "") +
+      ">Judge my code</button></div></div><textarea id=\"student-code\" data-testid=\"student-code\" spellcheck=\"false\">" +
+      esc(ui.draft) +
+      "</textarea></section>"
+    );
+  }
+
+  function renderReview(level) {
+    const no = ui.production === "no" ? " selected" : "";
+    const yes = ui.production === "yes" ? " selected" : "";
+    return (
+      '<section class="split"><div class="panel"><p class="concept">' +
+      esc(level.concept) +
+      '</p><p class="tutor">The score band is fixed before you answer. Land inside it and the flaw box opens.</p><div class="controls"><button class="choice' +
+      no +
+      '" data-action="set-production" data-value="no" data-testid="ship-no">Would not ship</button><button class="choice' +
+      yes +
+      '" data-action="set-production" data-value="yes" data-testid="ship-yes">Would ship</button></div><label class="kicker" for="review-score">Score 1 to 10</label><div class="controls"><input id="review-score" data-testid="review-score" type="number" min="1" max="10" value="' +
+      esc(ui.scoreDraft) +
+      '"><button class="primary" data-action="check-score" data-testid="check-score"' +
+      (ui.busy ? " disabled" : "") +
+      '>Check my score</button></div></div><div data-testid="sample-code">' +
+      codeBlock(level.sample) +
+      "</div></section>"
+    );
+  }
+
+  function renderFlaws(level) {
+    return (
+      '<section class="panel" data-testid="zone"><p class="concept">You are in the correct judge zone.</p><p class="tutor">Name the flaws. Say what breaks if this runs more than once, and what the file does. Haiku judges that list when a key is saved.</p><textarea id="flaw-text" data-testid="flaws" spellcheck="false">' +
+      esc(ui.flawDraft) +
+      '</textarea><p class="tutor" data-testid="judge-report">' +
+      esc(ui.report) +
+      '</p><button class="primary" data-action="judge-flaws" data-testid="judge-flaws"' +
+      (ui.busy ? " disabled" : "") +
+      ">Judge my flaws</button></section>"
+    );
+  }
+
+  function setProduction(value) {
+    const field = document.getElementById("review-score");
+    if (field) ui.scoreDraft = field.value;
+    ui.production = value;
+    render();
+  }
+
+  async function judgeWriting() {
+    if (ui.busy) return;
+    const field = document.getElementById("student-code");
+    if (field) ui.draft = field.value;
+    const level = currentLevel();
+    progress.levels[level.id].draft = ui.draft;
+    save();
+    ui.busy = true;
+    ui.feedback = "Running tests, then judging the writing.";
+    ui.feedbackTone = "";
+    render();
+    let data = null;
+    try {
+      data = await postJson("/api/write", { code: ui.draft, apiKey: haikuKey() });
+    } catch (error) {
+      ui.feedback = "The tutor server did not answer. Start python3 -m server from the repo root.";
+      ui.feedbackTone = "bad";
+    }
+    ui.busy = false;
+    if (data) applyWrite(level, data);
+    render();
+  }
+
+  function applyWrite(level, data) {
+    const who = data.by === "haiku" ? "Claude Haiku" : "Fixed rubric";
+    if (!data.testsPass) {
+      ui.feedback = (data.failures || []).join(" ");
+      ui.feedbackTone = "bad";
+      ui.report = "";
+      return;
+    }
+    progress = logic.awardCheck(
+      { points: progress.points, levels: { ...progress.levels, [level.id]: { ...progress.levels[level.id], checkPassed: true } } },
+      level.id
+    );
+    ui.report = who + ": " + (data.note || "");
+    if (data.pass) {
+      progress = logic.markCleared(progress, level.id);
+      progress = logic.awardClear(progress, level.id, false);
+      ui.step = "cleared";
+      ui.feedback = "";
+    } else {
+      ui.feedback = "Tests passed. The writing was not accepted.";
+      ui.feedbackTone = "bad";
+    }
+    save();
+  }
+
+  async function checkScore() {
+    if (ui.busy) return;
+    const field = document.getElementById("review-score");
+    if (field) ui.scoreDraft = field.value;
+    if (ui.production !== "yes" && ui.production !== "no") {
+      ui.feedback = "Say if this would ship.";
+      ui.feedbackTone = "bad";
+      render();
+      return;
+    }
+    ui.busy = true;
+    render();
+    let data = null;
+    try {
+      data = await postJson("/api/review-score", {
+        production: ui.production === "yes",
+        score: Number(ui.scoreDraft),
+      });
+    } catch (error) {
+      ui.feedback = "The tutor server did not answer. Start python3 -m server from the repo root.";
+      ui.feedbackTone = "bad";
+    }
+    ui.busy = false;
+    if (!data) {
+      render();
+      return;
+    }
+    ui.feedback = data.hint || "";
+    ui.feedbackTone = data.in_zone ? "good" : "bad";
+    if (data.in_zone) {
+      const level = currentLevel();
+      progress = logic.awardCheck(
+        {
+          points: progress.points,
+          levels: { ...progress.levels, [level.id]: { ...progress.levels[level.id], checkPassed: true } },
+        },
+        level.id
+      );
+      save();
+      ui.step = "flaws";
+      ui.feedback = "";
+    }
+    render();
+  }
+
+  async function judgeFlaws() {
+    if (ui.busy) return;
+    const field = document.getElementById("flaw-text");
+    if (field) ui.flawDraft = field.value;
+    const level = currentLevel();
+    progress.levels[level.id].flawDraft = ui.flawDraft;
+    save();
+    ui.busy = true;
+    ui.feedback = "Judging the flaws.";
+    ui.feedbackTone = "";
+    render();
+    let data = null;
+    try {
+      data = await postJson("/api/review-flaws", { text: ui.flawDraft, apiKey: haikuKey() });
+    } catch (error) {
+      ui.feedback = "The tutor server did not answer. Start python3 -m server from the repo root.";
+      ui.feedbackTone = "bad";
+    }
+    ui.busy = false;
+    if (data) applyFlaws(level, data);
+    render();
+  }
+
+  function applyFlaws(level, data) {
+    const who = data.by === "haiku" ? "Claude Haiku" : "Fixed rubric";
+    ui.report = who + ": " + (data.note || "");
+    if (!data.pass) {
+      ui.feedback = "Not accepted yet.";
+      ui.feedbackTone = "bad";
+      return;
+    }
+    progress = logic.markCleared(progress, level.id);
+    progress = logic.awardClear(progress, level.id, false);
+    ui.step = "cleared";
+    ui.feedback = "";
+    save();
+  }
+
+  async function postJson(url, body) {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!response.ok) throw new Error("bad status");
+    return response.json();
   }
 
   function esc(value) {

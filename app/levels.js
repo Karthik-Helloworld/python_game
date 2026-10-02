@@ -486,7 +486,7 @@
     {
       id: "V",
       title: "Judge generated code",
-      blurb: "Accept or reject a diff, then say why. Not in this build.",
+      blurb: "One judge level is open under Write and judge. Reviewing a full diff is not in this build.",
     },
     {
       id: "VI",
@@ -494,6 +494,30 @@
       blurb: "Opens only after you can write a small program alone. Not in this build.",
     },
   ];
+
+  const practice = [
+    {
+      id: "write-ahead",
+      title: "Write the branch",
+      alwaysOpen: true,
+      mode: "write",
+      next: "judge-save",
+      concept: "Write ahead(score_a, score_b). Return A when the first score is higher, B when the second is higher, and tie when they match.",
+      starter: 'def ahead(score_a, score_b):\n    return "tie"\n',
+    },
+    {
+      id: "judge-save",
+      title: "Judge this file",
+      alwaysOpen: true,
+      mode: "judge",
+      concept: "Say if this would ship in production, give it a score from 1 to 10, then name the flaws.",
+      sample:
+        'def save_scores(name, scores=[]):\n    scores.append(name)\n    handle = open("scores.txt", "w")\n    handle.write(str(scores))\n    return scores\n',
+    },
+  ];
+
+  const allIds = order.concat(practice.map((level) => level.id));
+  for (const level of practice) byId[level.id] = level;
 
   function linesFor(level, ctx) {
     const names = ctx || { nameA: "Ava", nameB: "Bo" };
@@ -508,5 +532,5 @@
     }));
   }
 
-  return { levels, order, byId, acts, linesFor, conditionalsProgram };
+  return { levels, order, byId, acts, linesFor, conditionalsProgram, practice, allIds };
 });
